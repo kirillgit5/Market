@@ -1,6 +1,8 @@
 package com.kramar.Market.goods;
 
+import com.kramar.Market.exception.CakeNotFoundException;
 import com.kramar.Market.rest.dto.Cake;
+import com.kramar.Market.rest.dto.CakeFullInfo;
 import com.kramar.Market.rest.dto.Cakes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +36,24 @@ public class CakeServiceImpl implements CakeService {
       cakes.setCakesList(cakeList);
 
       return cakes;
+    }
+
+    @Override
+    public CakeFullInfo getCakeFullInfo(Long id) {
+        return  cakeRepository.findById(id)
+                .map(entity -> {
+                    CakeFullInfo cakeInfo = new  CakeFullInfo();
+                    cakeInfo.setId(entity.getId());
+                    cakeInfo.setCalories(entity.getCalories());
+                    cakeInfo.setImage(entity.getImage());
+                    cakeInfo.setManufacturerName(entity.getManufacturerName());
+                    cakeInfo.setStorageConditions(entity.getStorageConditions());
+                    cakeInfo.setPrice(entity.getPrice());
+                    cakeInfo.setWeight(entity.getWeight());
+                    cakeInfo.setName(entity.getName());
+
+                    return  cakeInfo;
+                })
+                .orElseThrow(() -> new CakeNotFoundException("Cake not exist"));
     }
 }
