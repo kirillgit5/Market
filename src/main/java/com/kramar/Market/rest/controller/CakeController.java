@@ -2,8 +2,8 @@ package com.kramar.Market.rest.controller;
 
 import com.kramar.Market.goods.CakeServiceImpl;
 import com.kramar.Market.rest.dto.Cake;
+import com.kramar.Market.rest.dto.CakeFullInfo;
 import com.kramar.Market.rest.dto.Cakes;
-import com.kramar.Market.exception.CakeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,11 +65,8 @@ public class CakeController {
     }
 
     @GetMapping(value = "cake/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cake cake(@PathVariable Long id) {
-        return cakesList.getCakesList().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElseThrow(()->new CakeNotFoundException("Cake not found"));
+    public CakeFullInfo cake(@PathVariable Long id) {
+        return cakeService.getCakeFullInfo(id);
     }
 
     @PostMapping(path = "createCake", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
