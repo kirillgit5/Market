@@ -1,5 +1,6 @@
 package com.kramar.Market.rest.controller;
 
+import com.kramar.Market.goods.CakeService;
 import com.kramar.Market.goods.CakeServiceImpl;
 import com.kramar.Market.rest.dto.Cake;
 import com.kramar.Market.rest.dto.CakeFullInfo;
@@ -20,10 +21,10 @@ import java.util.List;
 //@RequestMapping("/v1/cakes")
 public class CakeController {
     private Cakes cakesList = new Cakes();
-    private final CakeServiceImpl cakeService;
+    private final CakeService cakeService;
 
     @Autowired
-    public CakeController(CakeServiceImpl cakeService) {
+    public CakeController(CakeService cakeService) {
         this.cakeService = cakeService;
 
         List<Cake> tmp = new ArrayList<Cake>();
