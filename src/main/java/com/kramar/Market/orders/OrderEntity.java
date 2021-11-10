@@ -1,5 +1,6 @@
 package com.kramar.Market.orders;
 
+import com.kramar.Market.purchases.PurchaseEntity;
 import com.kramar.Market.users.UserEntity;
 import lombok.*;
 import org.hibernate.Hibernate;
