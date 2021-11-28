@@ -1,10 +1,15 @@
 package com.kramar.Market.rest.controller;
 
+import com.kramar.Market.exception.UserAlreadyExistException;
+import com.kramar.Market.exception.UserNotExistException;
 import com.kramar.Market.goods.CakeService;
 import com.kramar.Market.goods.CakeServiceImpl;
-import com.kramar.Market.rest.dto.Cake;
-import com.kramar.Market.rest.dto.CakeFullInfo;
-import com.kramar.Market.rest.dto.Cakes;
+import com.kramar.Market.orders.OrderEntity;
+import com.kramar.Market.orders.OrderService;
+import com.kramar.Market.purchases.PurchaseService;
+import com.kramar.Market.rest.dto.*;
+import com.kramar.Market.users.UserEntity;
+import com.kramar.Market.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,46 +28,28 @@ import java.util.List;
 public class CakeController {
     private Cakes cakesList = new Cakes();
     private final CakeService cakeService;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final PurchaseService purchaseService;
 
     @Autowired
-    public CakeController(CakeService cakeService) {
+    public CakeController(
+            CakeService cakeService,
+            UserService userService,
+            OrderService orderService,
+            PurchaseService purchaseService
+    ) {
         this.cakeService = cakeService;
+        this.userService = userService;
+        this.orderService = orderService;
+        this.purchaseService = purchaseService;
 
         List<Cake> tmp = new ArrayList<Cake>();
         cakesList.setCakesList(tmp);
     }
 
-//    public  CakeController() {
-//        Cakes cakes = new Cakes();
-//        Cake cake1 = new Cake();
-//        Cake cake2 = new Cake();
-//
-//        cake1.setName("Napoleon");
-//        cake1.setPrice(new BigDecimal(124));
-//        cake1.setCalories(new BigDecimal(141));
-//        cake1.setWeight(new BigDecimal(414));
-//        cake1.setImage("tort.jpg");
-//        cake1.setId(1L);
-//
-//        cake2.setName("Med");
-//        cake2.setPrice(new BigDecimal(313));
-//        cake2.setCalories(new BigDecimal(133));
-//        cake2.setWeight(new BigDecimal(546));
-//        cake2.setId(2L);
-//
-//        cake2.setImage("tort.jpg");
-//
-//        ArrayList<Cake> arrCake = new ArrayList<Cake>();
-//        arrCake.add(cake1);
-//        arrCake.add(cake2);
-//
-//        cakesList.setCakesList(arrCake);
-//    }
-
-
-
     @GetMapping(value = "cakes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cakes cakes() {
+    public Cakes cakes(Principal principal) {
         return  cakeService.getCakes();
     }
 
@@ -74,5 +62,15 @@ public class CakeController {
     public ResponseEntity<Cake> createCake(@RequestBody @Valid Cake newCake) {
             cakesList.getCakesList().add(newCake);
             return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PostMapping(path = "createOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createOrder(@RequestBody @Valid Order order) {
+        try {
+            userService.addUser(order.getUser());
+        } catch (UserAlreadyExistException exception) {}
+
+        orderService.addOrder(order);
     }
 }

@@ -1,5 +1,6 @@
 package com.kramar.Market.orders;
 
+import com.kramar.Market.purchases.PurchaseEntity;
 import com.kramar.Market.users.UserEntity;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "ORDER")
+@Table(name = "ORDERFULLINFO")
 public class OrderEntity {
     @Setter(AccessLevel.NONE)
     private @Id

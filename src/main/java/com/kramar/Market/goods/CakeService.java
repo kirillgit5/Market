@@ -6,4 +6,6 @@ import com.kramar.Market.rest.dto.Cakes;
 public interface CakeService {
     public Cakes getCakes();
     CakeFullInfo getCakeFullInfo(Long id);
+    CakeEntity getCakeEntity(Long id);
+    void addCake(CakeFullInfo cake);
 }

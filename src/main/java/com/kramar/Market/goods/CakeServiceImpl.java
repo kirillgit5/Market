@@ -56,4 +56,23 @@ public class CakeServiceImpl implements CakeService {
                 })
                 .orElseThrow(() -> new CakeNotFoundException("Cake not exist"));
     }
+
+    @Override
+    public void addCake(CakeFullInfo cake) {
+        CakeEntity entity = new CakeEntity();
+        entity.setPrice(cake.getPrice());
+        entity.setCalories(cake.getCalories());
+        entity.setImage(cake.getImage());
+        entity.setWeight(entity.getWeight());
+        entity.setManufacturerName(cake.getManufacturerName());
+        entity.setStorageConditions(cake.getStorageConditions());
+        entity.setName(cake.getName());
+
+        cakeRepository.save(entity);
+    }
+
+    @Override
+    public CakeEntity getCakeEntity(Long id) {
+        return cakeRepository.findById(id).get();
+    }
 }
