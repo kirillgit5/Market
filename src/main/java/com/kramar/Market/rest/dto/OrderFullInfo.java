@@ -15,7 +15,7 @@ public class OrderFullInfo {
     @NotNull
     @Schema(description = "userId", required = true)
     @JsonProperty("userId")
-    private String userId;
+    private Long userId;
 
     @NotNull
     @Schema(description = "order", required = true)

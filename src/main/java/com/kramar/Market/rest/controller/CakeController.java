@@ -1,5 +1,7 @@
 package com.kramar.Market.rest.controller;
 
+import com.kramar.Market.exception.UserAlreadyExistException;
+import com.kramar.Market.exception.UserNotExistException;
 import com.kramar.Market.goods.CakeService;
 import com.kramar.Market.goods.CakeServiceImpl;
 import com.kramar.Market.orders.OrderEntity;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class CakeController {
     }
 
     @GetMapping(value = "cakes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cakes cakes() {
+    public Cakes cakes(Principal principal) {
         return  cakeService.getCakes();
     }
 
@@ -61,14 +64,13 @@ public class CakeController {
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = "createOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderFullInfo> createOrder(@RequestBody @Valid OrderFullInfo newOrder) {
-        UserEntity userEntity = userService.getUserBy(newOrder.getUserId());
-        OrderEntity orderEntity = orderService.addOrder(newOrder.getOrder(),userEntity);
-        for (Purchase purchase :newOrder.getPurchases()){
-            purchaseService.addPurchase(orderEntity, cakeService.getCakeEntity(purchase.getCakeId()), purchase.getNumber());
-        }
+    public void createOrder(@RequestBody @Valid Order order) {
+        try {
+            userService.addUser(order.getUser());
+        } catch (UserAlreadyExistException exception) {}
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        orderService.addOrder(order);
     }
 }

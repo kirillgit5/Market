@@ -11,15 +11,17 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Schema(description = "")
 @Validated
 public class Order {
-    @Null
-    @Schema(description = "id", required = false)
-    @JsonProperty("id")
-    private Long id;
+
+    @NotNull
+    @Schema(description = "User", required = true)
+    @JsonProperty("user")
+    private User user;
 
     @NotNull
     @Schema(description = "delivery need", required = true)
@@ -35,4 +37,9 @@ public class Order {
     @Schema(description = "delivery address", required = true)
     @JsonProperty("deliveryAddress")
     private String deliverlyAddress;
+
+    @NotNull
+    @Schema(description = "purchases", required = true)
+    @JsonProperty("purchases")
+    private List<Purchase> purchases;
 }

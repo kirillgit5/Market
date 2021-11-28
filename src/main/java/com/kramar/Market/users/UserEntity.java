@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "USER")
+@Table(name = "USERENTITY")
 public class UserEntity {
     @Setter(AccessLevel.NONE)
     private @Id
