@@ -2,6 +2,6 @@ package com.kramar.Market.exception;
 
 public class UserAlreadyExistException extends Exception {
     public UserAlreadyExistException(String message) {
-        super(message);
+            super(message);
     }
 }

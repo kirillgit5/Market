@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Order Info</title>
+</head>
+<body>
+<form action="#" th:action="@{/admin/changeOrderInfo/{id}(id=${order.id})}" th:object="${order}" method="post">
+<h2>Order Info</h2>
+    <td th:text="${order.customerName}"></td>
+    <td th:text="${order.number}"></td>
+    <p>Time: <input type="text" th:field="*{deliverlyTime}" /></p>
+    <p>Address: <input type="text" th:field="*{deliverlyAddress}" /></p>
+    <h2>Order Status</h2>
+    <select>
+        <option th:each="status : ${T(com.kramar.Market.orders.OrderStatus).values()}"
+                th:value="${status}"
+                th:text="${status}"
+                th:selected="${order.orderStatus == status}">
+        </option>
+    </select>
+    <h2>Cakes</h2>
+    <table table class="table table-striped" border="1">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="cake : ${order.getCakes()}">
+        <td th:text="${cake.getName()}"></td>
+        <td th:text="${cake.getPrice()}"></td>
+    </tr>
+    </table>
+    <p><input type="submit" value="Submit" />
+</form>
+</body>
+</html>
