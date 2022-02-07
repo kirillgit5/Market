@@ -4,6 +4,7 @@ import com.kramar.Market.orders.Deliverly;
 import com.kramar.Market.orders.OrderStatus;
 import com.kramar.Market.orders.Payment;
 import com.kramar.Market.rest.dto.cake.CakeUIAdapter;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private final PurchaseRepository purchaseRepository;
     private final UserRepository userRepository;
     private final CakeRepository cakeRepository;
-
-    @Autowired
+    
     public OrderServiceImpl(OrderRepository orderRepository,
                             PurchaseRepository purchaseRepository,
                             UserRepository userRepository,
@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
                     PurchaseEntity purchaseEntity = new PurchaseEntity();
                     purchaseEntity.setOrder(orderEntity);
                     purchaseEntity.setNumber(purchase.getNumber());
-                    purchaseEntity.setCake(cakeRepository.findById(purchase.getId()).orElseThrow(RuntimeException::new));
+                    purchaseEntity.setCake(cakeRepository.findById(purchase.getCakeId()).orElseThrow(RuntimeException::new));
                     return purchaseEntity;
                 }).collect(Collectors.toList()));
         orderEntity.setUser(userRepository.findUserEntitiesByNumber(order.getUser().getPhoneNumber()));
@@ -65,9 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderAdapter> getOrders() {
-        return orderRepository.findAll().stream().map(entity -> {
-            return new OrderAdapter(entity);
-        }).collect(Collectors.toList());
+        return orderRepository.findAll().stream().map(OrderAdapter::new).collect(Collectors.toList());
     }
 
     @Override
@@ -109,6 +107,7 @@ public class OrderServiceImpl implements OrderService {
 
         entity.setDeliverlyAddress(order.getDeliverlyAddress());
         entity.setDeliverlyTime(order.getDeliverlyTime());
+        entity.setStatus(order.getOrderStatus());
         orderRepository.save(entity);
 
         return;
