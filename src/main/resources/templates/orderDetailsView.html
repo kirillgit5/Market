@@ -12,7 +12,7 @@
     <p>Time: <input type="text" th:field="*{deliverlyTime}" /></p>
     <p>Address: <input type="text" th:field="*{deliverlyAddress}" /></p>
     <h2>Order Status</h2>
-    <select>
+    <select id="status" name="status">
         <option th:each="status : ${T(com.kramar.Market.orders.OrderStatus).values()}"
                 th:value="${status}"
                 th:text="${status}"

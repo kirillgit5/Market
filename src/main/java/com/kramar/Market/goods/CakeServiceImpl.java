@@ -63,7 +63,7 @@ public class CakeServiceImpl implements CakeService {
         entity.setPrice(cake.getPrice());
         entity.setCalories(cake.getCalories());
         entity.setImage(cake.getImage());
-        entity.setWeight(entity.getWeight());
+        entity.setWeight(cake.getWeight());
         entity.setManufacturerName(cake.getManufacturerName());
         entity.setStorageConditions(cake.getStorageConditions());
         entity.setName(cake.getName());

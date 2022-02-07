@@ -58,15 +58,15 @@ public class CakeController {
         return cakeService.getCakeFullInfo(id);
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = "createCake", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cake> createCake(@RequestBody @Valid Cake newCake) {
-            cakesList.getCakesList().add(newCake);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+    public void createCake(@RequestBody @Valid CakeFullInfo newCake) {
+        cakeService.addCake(newCake);
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = "createOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createOrder(@RequestBody @Valid Order order) {
+    public void createOrder(@Valid Order order) {
         try {
             userService.addUser(order.getUser());
         } catch (UserAlreadyExistException exception) {}

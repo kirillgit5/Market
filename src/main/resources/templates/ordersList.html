@@ -22,15 +22,12 @@
             <td th:text="${order.getOrderStatus()}"></td>
             <td th:text="${order.getId()}"></td>
             <td>
-                <form action="#" th:action="@{/admin/getOrderInfo/{id}(id=${order.id})}"  method="get">
-                    <input type="submit" value="Details" />
-                </form>
-                <form action="#" th:action="@{/admin/getOrderInfo/{id}(id=${order.id})}"  method="get">
-                    <input type="submit" value="Details" />
-                </form>
-                <form action="#" th:action="@{/admin/deleteOrder/{id}(id=${order.id})}"  method="get">
-                    <input type="submit" value="Delete" />
-                </form>
+                <a th:href="@{/admin//getOrderInfo/{id}(id=${order.id})}">
+                    <button type="button">More info</button>
+                </a>
+                <a th:href="@{/admin//deleteOrder/{id}(id=${order.id})}">
+                    <button type="button">Delete</button>
+                </a>
             </td>
         </tr>
     </table>
