@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter(AccessLevel.PROTECTED)
+@Setter(AccessLevel.PUBLIC)
 @ToString
 @RequiredArgsConstructor
 @Table(name = "CAKE")

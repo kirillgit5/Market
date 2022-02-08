@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PUBLIC)
 @ToString
 @RequiredArgsConstructor
 @Table(name = "USERENTITY")
@@ -21,11 +21,9 @@ public class UserEntity {
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(name = "name")
     private String name;
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(name = "number", nullable = false, unique = true)
     @NaturalId(mutable = true)
     private String number;

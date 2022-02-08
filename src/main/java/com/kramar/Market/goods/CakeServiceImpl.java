@@ -1,6 +1,7 @@
 package com.kramar.Market.goods;
 
 import com.kramar.Market.exception.CakeNotFoundException;
+import com.kramar.Market.goods.dao.CakeDAO;
 import com.kramar.Market.rest.dto.Cake;
 import com.kramar.Market.rest.dto.CakeFullInfo;
 import com.kramar.Market.rest.dto.Cakes;
@@ -12,30 +13,34 @@ import java.util.stream.Collectors;
 @Service
 public class CakeServiceImpl implements CakeService {
     private final CakeRepository cakeRepository;
+    private final CakeDAO cakeDAO;
 
     @Autowired
-    public CakeServiceImpl(CakeRepository cakeRepository) {
+    public CakeServiceImpl(CakeRepository cakeRepository, CakeDAO cakeDAO) {
         this.cakeRepository = cakeRepository;
+        this.cakeDAO = cakeDAO;
     }
 
     @Override
     public Cakes getCakes() {
-      List<CakeEntity> cakeEntityList = cakeRepository.findAll();
-      List<Cake> cakeList = cakeEntityList.stream().map( cakeEntity -> {
-          Cake cake = new Cake();
-          cake.setId(cakeEntity.getId());
-          cake.setCalories(cakeEntity.getCalories());
-          cake.setName(cakeEntity.getName());
-          cake.setImage(cakeEntity.getImage());
-          cake.setPrice(cakeEntity.getPrice());
-          cake.setWeight(cakeEntity.getWeight());
-          return cake;
-      }).collect(Collectors.toList());
+        List<CakeEntity> cakeList = cakeDAO.getCakes();
+        Cakes cakes = new Cakes();
 
-      Cakes cakes = new Cakes();
-      cakes.setCakesList(cakeList);
+        List<Cake> cakesAdapt = cakeList.stream().map(cakeEntity -> {
+            Cake cake = new Cake();
+            cake.setWeight(cakeEntity.getWeight());
+            cake.setCalories(cakeEntity.getWeight());
+            cake.setPrice(cakeEntity.getPrice());
+            cake.setImage(cakeEntity.getImage());
+            cake.setName(cakeEntity.getName());
+            cake.setImage(cakeEntity.getImage());
 
-      return cakes;
+            return cake;
+        }).collect(Collectors.toList());
+
+
+        cakes.setCakesList(cakesAdapt);
+        return cakes;
     }
 
     @Override
@@ -59,20 +64,11 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public void addCake(CakeFullInfo cake) {
-        CakeEntity entity = new CakeEntity();
-        entity.setPrice(cake.getPrice());
-        entity.setCalories(cake.getCalories());
-        entity.setImage(cake.getImage());
-        entity.setWeight(entity.getWeight());
-        entity.setManufacturerName(cake.getManufacturerName());
-        entity.setStorageConditions(cake.getStorageConditions());
-        entity.setName(cake.getName());
-
-        cakeRepository.save(entity);
+        cakeDAO.addCake(cake);
     }
 
     @Override
     public CakeEntity getCakeEntity(Long id) {
-        return cakeRepository.findById(id).get();
+        return cakeDAO.getCake(id);
     }
 }
