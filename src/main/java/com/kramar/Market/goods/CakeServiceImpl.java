@@ -2,6 +2,7 @@ package com.kramar.Market.goods;
 
 import com.kramar.Market.exception.CakeNotFoundException;
 import com.kramar.Market.goods.dao.CakeDAO;
+import com.kramar.Market.goods.dao.CakeDAOTemplate;
 import com.kramar.Market.rest.dto.Cake;
 import com.kramar.Market.rest.dto.CakeFullInfo;
 import com.kramar.Market.rest.dto.Cakes;
@@ -13,17 +14,17 @@ import java.util.stream.Collectors;
 @Service
 public class CakeServiceImpl implements CakeService {
     private final CakeRepository cakeRepository;
-    private final CakeDAO cakeDAO;
+    private final CakeDAOTemplate cakeDAOTemplate;
 
     @Autowired
-    public CakeServiceImpl(CakeRepository cakeRepository, CakeDAO cakeDAO) {
+    public CakeServiceImpl(CakeRepository cakeRepository, CakeDAOTemplate cakeDAOTemplate) {
         this.cakeRepository = cakeRepository;
-        this.cakeDAO = cakeDAO;
+        this.cakeDAOTemplate = cakeDAOTemplate;
     }
 
     @Override
     public Cakes getCakes() {
-        List<CakeEntity> cakeList = cakeDAO.getCakes();
+        List<CakeEntity> cakeList = cakeDAOTemplate.getCakes();
         Cakes cakes = new Cakes();
 
         List<Cake> cakesAdapt = cakeList.stream().map(cakeEntity -> {
@@ -64,11 +65,11 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public void addCake(CakeFullInfo cake) {
-        cakeDAO.addCake(cake);
+        cakeDAOTemplate.addCake(cake);
     }
 
     @Override
     public CakeEntity getCakeEntity(Long id) {
-        return cakeDAO.getCake(id);
+        return cakeDAOTemplate.getCake(id);
     }
 }
