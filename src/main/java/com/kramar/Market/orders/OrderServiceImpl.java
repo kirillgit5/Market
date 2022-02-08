@@ -12,6 +12,7 @@ import com.kramar.Market.rest.dto.Purchase;
 import com.kramar.Market.users.UserEntity;
 import com.kramar.Market.users.UserRepository;
 import com.kramar.Market.users.UserService;
+import com.kramar.Market.users.dao.UserDAOTemplate;
 import com.kramar.Market.users.dao.UserDao;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +26,21 @@ public class OrderServiceImpl implements OrderService {
     private final PurchaseRepository purchaseRepository;
     private final CakeRepository cakeRepository;
     private final OrderDAO orderDao;
-    private final UserDao userDao;
+    private final UserDAOTemplate userDAOTemplate;
 
     @Autowired
     public OrderServiceImpl(PurchaseRepository purchaseRepository,
                             CakeRepository cakeRepository,
                             OrderDAO orderDao,
-                            UserDao userDao) {
+                            UserDAOTemplate userDAOTemplate) {
         this.purchaseRepository = purchaseRepository;
         this.cakeRepository = cakeRepository;
         this.orderDao = orderDao;
-        this.userDao = userDao;
+        this.userDAOTemplate = userDAOTemplate;
     }
 
     @Override
     public void addOrder(Order order) {
-        orderDao.addOrder(order, userDao.getUserBy(order.getUser().getPhoneNumber()).getId());
+        orderDao.addOrder(order, userDAOTemplate.getUserBy(order.getUser().getPhoneNumber()).getId());
     }
 }

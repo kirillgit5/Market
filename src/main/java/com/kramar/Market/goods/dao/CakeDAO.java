@@ -92,7 +92,7 @@ public class CakeDAO {
         }
     }
 
-    public void  addCake(CakeFullInfo cakeFullInfo) {
+    public void addCake(CakeFullInfo cakeFullInfo) {
         try {
             Statement statement = connection.createStatement();
 
