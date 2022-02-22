@@ -15,4 +15,10 @@ public class CakeAdvice {
     public String cakeNotFound() {
         return "Осуждаю";
     }
+
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    @ExceptionHandler(org.hibernate.PessimisticLockException.class)
+    public String transactionConflict(org.hibernate.PessimisticLockException ex){
+        return "Confict error";
+    }
 }
